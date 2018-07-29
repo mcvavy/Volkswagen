@@ -6,8 +6,8 @@ using VOLKSWAGEN.Core.Entities;
 
 namespace VOLKSWAGEN.Core.Interfaces
 {
-    public interface IVehicleLookUp<T> where T : new()
+    public interface IVehicleLookUp
     {
-        Task<VehicleRegistration> GetVehicleData(string vehicleLicense);
+        Task<VehicleRegistration> GetVehicleData(string vehicleLicense, ConfigSettings settings, ResponseConfig responseConfig);
     }
 }

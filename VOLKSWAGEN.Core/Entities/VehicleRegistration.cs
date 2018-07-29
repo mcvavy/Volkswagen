@@ -11,10 +11,10 @@ namespace VOLKSWAGEN.Core.Entities
         public string EngineNumber { get; set; }
         public object WheelPlan { get; set; }
         public bool Exported { get; set; }
-        public int GrossWeight { get; set; }
+        public double GrossWeight { get; set; }
         public object CertificateOfDestructionIssued { get; set; }
         public string MvrisMakeCode { get; set; }
-        public int Co2Emissions { get; set; }
+        public double Co2Emissions { get; set; }
         public string MakeModel { get; set; }
         public string DtpModelCode { get; set; }
         public int SeatingCapacity { get; set; }
@@ -31,8 +31,8 @@ namespace VOLKSWAGEN.Core.Entities
         public int GearCount { get; set; }
         public string DoorPlanLiteral { get; set; }
         public object PreviousVrmGb { get; set; }
-        public DateTime DateFirstRegistered { get; set; }
-        public DateTime DateExported { get; set; }
+        public DateTime? DateFirstRegistered { get; set; } = null;
+        public DateTime? DateExported { get; set; } = null;
         public string EngineCapacity { get; set; }
         public string DtpMakeCode { get; set; }
         public object PreviousVrmNi { get; set; }
@@ -40,14 +40,15 @@ namespace VOLKSWAGEN.Core.Entities
         public bool Imported { get; set; }
         public bool VehicleUsedBeforeFirstRegistration { get; set; }
         public string YearMonthFirstRegistered { get; set; }
-        public int MaxPermissibleMass { get; set; }
+        public double MaxPermissibleMass { get; set; }
         public string TransmissionType { get; set; }
         public object AbiBrokerNetCode { get; set; }
         public bool ImportNonEu { get; set; }
         public string Make { get; set; }
         public string Vrm { get; set; }
-        public DateTime DateOfLastUpdate { get; set; }
+        public DateTime? DateOfLastUpdate { get; set; } = null;
         public object DateScrapped { get; set; }
-        public DateTime DateFirstRegisteredUk { get; set; }
+        public DateTime? DateFirstRegisteredUk { get; set; } = null;
+        public LookupResponse Response { get; set; }
     }
 }
