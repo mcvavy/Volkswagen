@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
+using VOLKSWAGEN.Core.Entities;
 using VOLKSWAGEN.Core.Interfaces;
 using VOLKSWAGEN.Infrastructure.Helpers;
 using VOLKSWAGEN.Infrastructure.Services;
@@ -13,9 +12,12 @@ namespace VOLKSWAGEN.Infrastructure.DependencyResolution
     {
         public static void AddRegisteredTypes(this IServiceCollection services)
         {
-            services.AddScoped<IVehicleLookUp, VehicleLookUp>();
-            services.AddScoped<IJsonParser<JObject>, JsonParser>();
-            services.AddScoped<IJsonDeserializer, JsonDeserializer>();
+
+            services.AddTransient<HttpClient>();
+            services.AddTransient<VehicleRegistration>();
+            services.AddTransient<IVehicleLookUp, VehicleLookUp>();
+            services.AddTransient<IJsonParser<JObject>, JsonParser>();
+            services.AddTransient<IJsonDeserializer, JsonDeserializer>();
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using VOLKSWAGEN.Core.Entities;
 using VOLKSWAGEN.Infrastructure.DependencyResolution;
 using VOLKSWAGEN.Infrastructure.Extensions;
+using VOLKSWAGEN.Infrastructure.Helpers;
 
 namespace VOLKSWAGEN.API
 {
@@ -25,12 +25,10 @@ namespace VOLKSWAGEN.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddAutoMapper();
-
-            services.AddScoped<HttpClient>();
-            services.AddScoped<VehicleRegistration>();
-
-            services.AddApiKey(this.Configuration);
+            services.AddApiKey(Configuration);
             services.AddRegisteredTypes();
+
+            MapperConfig.RegisterMapping();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

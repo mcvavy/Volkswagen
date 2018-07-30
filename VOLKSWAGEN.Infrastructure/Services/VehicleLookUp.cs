@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using VOLKSWAGEN.Core.Entities;
 using VOLKSWAGEN.Core.Interfaces;
@@ -13,27 +14,32 @@ namespace VOLKSWAGEN.Infrastructure.Services
         private VehicleRegistration _vehicleRegistration;
         private readonly IJsonParser<JObject> _jsonParser;
         private readonly IJsonDeserializer _jsonDeserializer;
+        private readonly ConfigSettings _settings;
+        private readonly ResponseConfig _responseConfig;
         private readonly HttpClient _client;
 
         public VehicleLookUp(
             HttpClient client, 
             VehicleRegistration vehicleRegistration,
             IJsonParser<JObject> jsonParser,
-            IJsonDeserializer jsonDeserializer
+            IJsonDeserializer jsonDeserializer,
+            IOptions<ConfigSettings> settings,
+            IOptions<ResponseConfig> responseConfig
             )
         {
             _client = client;
             _vehicleRegistration = vehicleRegistration;
             _jsonParser = jsonParser;
             _jsonDeserializer = jsonDeserializer;
+            _settings = settings.Value;
+            _responseConfig = responseConfig.Value;
 
             ConfigureHttpClient(_client);
         }
 
-        public async Task<VehicleRegistration> GetVehicleData(string vehicleLicense, ConfigSettings settings, ResponseConfig responseConfig)
+        public async Task<VehicleRegistration> GetVehicleData(string vehicleLicense)
         {
-            _client.BaseAddress = new Uri(settings.BaseUrl);
-            var lookupUrl = new Uri(_client.BaseAddress, String.Format(settings.QueryUrl, settings.Apikey, vehicleLicense));
+            var lookupUrl = new Uri(_client.BaseAddress, String.Format(_settings.QueryUrl, _settings.Apikey, vehicleLicense));
 
 
             try
@@ -47,14 +53,14 @@ namespace VOLKSWAGEN.Infrastructure.Services
 
                     var vehicleDataJsonData = _jsonParser.Parse(vehicleLookupResponseString);
 
-                    var lookupStatus = vehicleDataJsonData[responseConfig.Response];
+                    var lookupStatus = vehicleDataJsonData[_responseConfig.Response];
 
                     _vehicleRegistration.Response = _jsonDeserializer.Deserialize<LookupResponse, JToken>(lookupStatus);
 
-                    if (_vehicleRegistration.Response.StatusCode == responseConfig.Success)
+                    if (_vehicleRegistration.Response.StatusCode == _responseConfig.Success)
                     {
-                        var vehicleRegistrationExtract = vehicleDataJsonData[responseConfig.Response][responseConfig.DataItems][
-                            responseConfig.VehicleRegistration];
+                        var vehicleRegistrationExtract = vehicleDataJsonData[_responseConfig.Response][_responseConfig.DataItems][
+                            _responseConfig.VehicleRegistration];
 
                         return _jsonDeserializer.Deserialize<VehicleRegistration, JToken>(vehicleRegistrationExtract);
                     }
@@ -70,10 +76,11 @@ namespace VOLKSWAGEN.Infrastructure.Services
 
         }
 
-        #region HttpClient COnfiguration
+        #region HttpClient Configuration
 
         private void ConfigureHttpClient(HttpClient client)
         {
+            client.BaseAddress = new Uri(_settings.BaseUrl);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml");

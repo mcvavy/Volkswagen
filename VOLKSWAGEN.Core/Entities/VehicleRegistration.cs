@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace VOLKSWAGEN.Core.Entities
 {
@@ -17,7 +15,7 @@ namespace VOLKSWAGEN.Core.Entities
         public double Co2Emissions { get; set; }
         public string MakeModel { get; set; }
         public string DtpModelCode { get; set; }
-        public int SeatingCapacity { get; set; }
+        public int? SeatingCapacity { get; set; }
         public string MvrisModelCode { get; set; }
         public string DoorPlan { get; set; }
         public string Model { get; set; }
@@ -46,7 +44,7 @@ namespace VOLKSWAGEN.Core.Entities
         public bool ImportNonEu { get; set; }
         public string Make { get; set; }
         public string Vrm { get; set; }
-        public DateTime? DateOfLastUpdate { get; set; } = null;
+        public DateTime? DateOfLastUpdate { get; set; }
         public object DateScrapped { get; set; }
         public DateTime? DateFirstRegisteredUk { get; set; } = null;
         public LookupResponse Response { get; set; }

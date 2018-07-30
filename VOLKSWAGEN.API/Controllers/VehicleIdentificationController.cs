@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using VOLKSWAGEN.Core.Entities;
+using VOLKSWAGEN.Core.DTOs;
 using VOLKSWAGEN.Core.Interfaces;
 
 namespace VOLKSWAGEN.API.Controllers
@@ -10,26 +10,21 @@ namespace VOLKSWAGEN.API.Controllers
     [ApiController]
     public class VehicleIdentificationController : Controller
     {
-        private readonly ConfigSettings _settings;
-        private readonly ResponseConfig _responseConfig;
         private readonly IVehicleLookUp _vehicleLookUp;
+        private readonly IMapper _mapper;
 
-        public VehicleIdentificationController(
-            IOptions<ConfigSettings> settings, 
-            IOptions<ResponseConfig> responseConfig, 
-            IVehicleLookUp vehicleLookUp)
+        public VehicleIdentificationController(IVehicleLookUp vehicleLookUp, IMapper mapper)
         {
-            _settings = settings.Value;
-            _responseConfig = responseConfig.Value;
             _vehicleLookUp = vehicleLookUp;
+            _mapper = mapper;
         }
 
         [HttpGet("{vehicleRegistration}", Name = "GetVehicleData")]
         public async Task<ActionResult> GetVehicleDetails(string vehicleRegistration)
         {
-            var response = await _vehicleLookUp.GetVehicleData(vehicleRegistration, _settings, _responseConfig);
+            var response = await _vehicleLookUp.GetVehicleData(vehicleRegistration);
 
-            return Ok(response);
+            return Ok(_mapper.Map<VehicleRegistrationDto>(response));
         }
 
 

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using VOLKSWAGEN.Core.Entities;
 
 namespace VOLKSWAGEN.Core.DTOs
@@ -18,6 +16,9 @@ namespace VOLKSWAGEN.Core.DTOs
         public string Make { get; set; }
         public string Vrm { get; set; }
         public DateTime? DateFirstRegisteredUk { get; set; } = null;
+        public double Co2Emissions { get; set; }
+        public string EngineCapacity { get; set; }
+        public string YearOfManufacture { get; set; }
         public LookupResponse Response { get; set; }
     }
 }
