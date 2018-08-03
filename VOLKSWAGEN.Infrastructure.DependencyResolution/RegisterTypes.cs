@@ -14,7 +14,7 @@ namespace VOLKSWAGEN.Infrastructure.DependencyResolution
         {
 
             services.AddTransient<HttpClient>();
-            services.AddTransient<VehicleRegistration>();
+            services.AddTransient<IVehicleRegistration,VehicleRegistration>();
             services.AddTransient<IVehicleLookUp, VehicleLookUp>();
             services.AddTransient<IJsonParser<JObject>, JsonParser>();
             services.AddTransient<IJsonDeserializer, JsonDeserializer>();

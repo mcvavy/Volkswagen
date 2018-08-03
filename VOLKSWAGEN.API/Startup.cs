@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using VOLKSWAGEN.Core.Entities;
 using VOLKSWAGEN.Infrastructure.DependencyResolution;
 using VOLKSWAGEN.Infrastructure.Extensions;
 using VOLKSWAGEN.Infrastructure.Helpers;
@@ -23,7 +23,25 @@ namespace VOLKSWAGEN.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-2.1
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins", builder =>
+                {
+                    builder
+                    .AllowAnyOrigin()
+                    .WithMethods("GET")
+                    .AllowAnyHeader();
+
+                });
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAllOrigins"));
+            });
+
             services.AddAutoMapper();
             services.AddApiKey(Configuration);
             services.AddRegisteredTypes();

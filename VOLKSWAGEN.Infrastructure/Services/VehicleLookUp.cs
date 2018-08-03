@@ -11,7 +11,7 @@ namespace VOLKSWAGEN.Infrastructure.Services
 {
     public class VehicleLookUp : IVehicleLookUp
     {
-        private VehicleRegistration _vehicleRegistration;
+        private readonly IVehicleRegistration _vehicleRegistration;
         private readonly IJsonParser<JObject> _jsonParser;
         private readonly IJsonDeserializer _jsonDeserializer;
         private readonly ConfigSettings _settings;
@@ -19,8 +19,8 @@ namespace VOLKSWAGEN.Infrastructure.Services
         private readonly HttpClient _client;
 
         public VehicleLookUp(
-            HttpClient client, 
-            VehicleRegistration vehicleRegistration,
+            HttpClient client,
+            IVehicleRegistration vehicleRegistration,
             IJsonParser<JObject> jsonParser,
             IJsonDeserializer jsonDeserializer,
             IOptions<ConfigSettings> settings,
@@ -37,7 +37,7 @@ namespace VOLKSWAGEN.Infrastructure.Services
             ConfigureHttpClient(_client);
         }
 
-        public async Task<VehicleRegistration> GetVehicleData(string vehicleLicense)
+        public async Task<IVehicleRegistration> GetVehicleDataAsync(string vehicleLicense)
         {
             var lookupUrl = new Uri(_client.BaseAddress, String.Format(_settings.QueryUrl, _settings.Apikey, vehicleLicense));
 
@@ -49,20 +49,16 @@ namespace VOLKSWAGEN.Infrastructure.Services
 
                 if (vehicleDataLookUp.IsSuccessStatusCode)
                 {
-                    var vehicleLookupResponseString = await vehicleDataLookUp.Content.ReadAsStringAsync();
+                    var vehicleJsonData = _jsonParser.Parse(await vehicleDataLookUp.Content.ReadAsStringAsync());
 
-                    var vehicleDataJsonData = _jsonParser.Parse(vehicleLookupResponseString);
-
-                    var lookupStatus = vehicleDataJsonData[_responseConfig.Response];
+                    var lookupStatus = vehicleJsonData[_responseConfig.Response];
 
                     _vehicleRegistration.Response = _jsonDeserializer.Deserialize<LookupResponse, JToken>(lookupStatus);
 
                     if (_vehicleRegistration.Response.StatusCode == _responseConfig.Success)
                     {
-                        var vehicleRegistrationExtract = vehicleDataJsonData[_responseConfig.Response][_responseConfig.DataItems][
-                            _responseConfig.VehicleRegistration];
 
-                        return _jsonDeserializer.Deserialize<VehicleRegistration, JToken>(vehicleRegistrationExtract);
+                        return _jsonDeserializer.Deserialize<VehicleRegistration, JToken>(ExtractVehicleDetail(vehicleJsonData));
                     }
                 }
 
@@ -76,7 +72,7 @@ namespace VOLKSWAGEN.Infrastructure.Services
 
         }
 
-        #region HttpClient Configuration
+        #region Private Methods
 
         private void ConfigureHttpClient(HttpClient client)
         {
@@ -87,6 +83,12 @@ namespace VOLKSWAGEN.Infrastructure.Services
             client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent",
                 "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:19.0) Gecko/20100101 Firefox/19.0");
             client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Charset", "ISO-8859-1");
+        }
+
+        private JToken ExtractVehicleDetail(JObject vehicleDataJsonData)
+        {
+            return vehicleDataJsonData[_responseConfig.Response][_responseConfig.DataItems][
+                _responseConfig.VehicleRegistration];
         }
 
         #endregion

@@ -1,8 +1,9 @@
 ﻿using System;
+using VOLKSWAGEN.Core.Interfaces;
 
 namespace VOLKSWAGEN.Core.Entities
 {
-    public class VehicleRegistration
+    public class VehicleRegistration : IVehicleRegistration
     {
         public string FuelType { get; set; }
         public bool Scrapped { get; set; }

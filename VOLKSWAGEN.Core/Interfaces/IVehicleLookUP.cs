@@ -5,6 +5,6 @@ namespace VOLKSWAGEN.Core.Interfaces
 {
     public interface IVehicleLookUp
     {
-        Task<VehicleRegistration> GetVehicleData(string vehicleLicense);
+        Task<IVehicleRegistration> GetVehicleDataAsync(string vehicleLicense);
     }
 }

@@ -6,6 +6,6 @@ namespace VOLKSWAGEN.Core.Interfaces
 {
     public interface IJsonParser<T> where T : new()
     {
-        T Parse(string data);
+        T Parse(string data) ;
     }
 }
