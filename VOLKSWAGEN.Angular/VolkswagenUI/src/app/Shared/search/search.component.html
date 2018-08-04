@@ -1,0 +1,17 @@
+<hr>
+<div class="row  push-down">
+    <div class="col-md-12 text-center">
+        <p>Enter your car registration to get started</p>
+        <div>
+            <form class="form-inline justify-content-center">
+                <div class="form-group mx-sm-3">
+                    <label for="carReg" class="sr-only">Car Reg</label>
+                    <input type="text" class="form-control car-search-box" id="carReg" placeholder="Car Reg" #reginput>
+                </div>
+                <button type="button" class="btn btn-success" (click)="getCarDetail(reginput.value)">Find Vehicle</button>
+            </form>
+            <h2 style="color: blue">{{errorMessage}}</h2>
+            <a href="#">I don't know my registration</a>
+        </div>
+    </div>
+</div>

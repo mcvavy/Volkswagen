@@ -1,0 +1,33 @@
+<app-crumb></app-crumb>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+                <div *ngIf="cardata.vrm">
+                        <p class="text-primary car-identity push-down text-center">We've identified this vehicle using the details you provided</p>
+                </div>
+
+                <div *ngIf="!cardata.vrm">
+                        <p class="text-primary car-identity push-down text-center">We almost had it! Let's Try again</p>
+                </div>
+          <div class="row justify-content-center">
+              <div class="col-md-2 car-image text-center"><i class="fas fa-car fa-8x"></i></div>
+              <div class="col-md-6">
+                <div class="car-details push-down">
+                  <div *ngIf="cardata.vrm">
+                        <a class="electricPos" href="/electricdreams">Edit</a>
+                      <h1>{{queryString}}</h1>
+                      <h4>{{cardata.colour}} {{cardata.makeModel}}, {{cardata.transmissionType}}, {{cardata.fuelType}}</h4>
+                  </div>
+                  <div *ngIf="!cardata.vrm">
+                      <a class="electricPos" href="/electricdreams">Edit</a>
+                      <h3><span style="color: red">{{queryString | uppercase}}</span> Can't Be Good!</h3>
+                      <h4>{{cardata.response.statusMessage}}</h4>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+</div>
+<app-milage></app-milage>
