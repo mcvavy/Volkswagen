@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using VOLKSWAGEN.Core.DTOs;
-using VOLKSWAGEN.Core.Entities;
+using Response = VOLKSWAGEN.Core.Entities.Response;
 
 namespace VOLKSWAGEN.Infrastructure.Helpers
 {
@@ -10,7 +10,7 @@ namespace VOLKSWAGEN.Infrastructure.Helpers
         {
             Mapper.Initialize(config =>
             {
-                config.CreateMap<VehicleRegistration, VehicleRegistrationDto>();
+                config.CreateMap<Response, ResponseDto>();
             });
         }
     }

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
+    <PackageReference Include="Moq" Version="4.9.0" />
+    <PackageReference Include="NSubstitute" Version="3.1.0" />
+    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    <PackageReference Include="Shouldly" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VOLKSWAGEN.API\VOLKSWAGEN.API.csproj" />
+    <ProjectReference Include="..\VOLKSWAGEN.Core\VOLKSWAGEN.Core.csproj" />
+    <ProjectReference Include="..\VOLKSWAGEN.Infrastructure.DependencyResolution\VOLKSWAGEN.Infrastructure.DependencyResolution.csproj" />
+    <ProjectReference Include="..\VOLKSWAGEN.Infrastructure\VOLKSWAGEN.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -20,11 +20,11 @@ namespace VOLKSWAGEN.API.Controllers
         }
 
         [HttpGet("{vehicleRegistration}", Name = "GetVehicleData")]
-        public async Task<ActionResult> GetVehicleDetails(string vehicleRegistration)
+        public async Task<ActionResult> GetVehicleDetailsAsync(string vehicleRegistration)
         {
             var response = await _vehicleLookUp.GetVehicleDataAsync(vehicleRegistration);
 
-            return Ok(_mapper.Map<VehicleRegistrationDto>(response));
+            return Ok(_mapper.Map<ResponseDto>(response));
         }
 
 

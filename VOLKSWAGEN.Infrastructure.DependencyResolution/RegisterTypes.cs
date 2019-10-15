@@ -1,6 +1,5 @@
 ﻿using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
 using VOLKSWAGEN.Core.Entities;
 using VOLKSWAGEN.Core.Interfaces;
 using VOLKSWAGEN.Infrastructure.Helpers;
@@ -14,9 +13,8 @@ namespace VOLKSWAGEN.Infrastructure.DependencyResolution
         {
 
             services.AddTransient<HttpClient>();
-            services.AddTransient<IVehicleRegistration,VehicleRegistration>();
+            services.AddTransient<VehicleData>();
             services.AddTransient<IVehicleLookUp, VehicleLookUp>();
-            services.AddTransient<IJsonParser<JObject>, JsonParser>();
             services.AddTransient<IJsonDeserializer, JsonDeserializer>();
         }
     }
